@@ -1,0 +1,97 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+\usepackage{amsmath} % More symbols
+\usepackage{amsfonts} % More fonts
+\usepackage{amsthm} % Theorems
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% Theorem stuff
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newtheorem{example}[theorem]{Example}
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{Functions Of Complex Variable 2 - 2021B}
+\author{Alon Ben-Tsur}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Normal Convergence of Series and Products}
+
+We'll start with a definition:
+
+\begin{definition}
+Let $G \subseteq \mathbb{C}$ be an open set. A series of functions $f_n$ is said to be normally convergent (or locally normally convergnet, or compactly normally convergent) if for every compact set $K \subseteq G$, for some $n_0 = n\left(K\right)$, we have that:
+\[ \sum _{n \geq n_0} \left\lVert f_n \right\rVert_{C\left(K\right)} = \sum _{n \geq n_0} \sup _K \left|f_n\right| < \infty \]
+\end{definition}
+
+Note, that we can make sense of this definition in the case of meromorphic functions (which might be "partially defined" on $G$, up to a discrete set). Noticing that if every point $z \in G$ has a neighborhood on which almost all $f_n$ functions are defined, and thus bounded on comapct sets, this definition holds.
+
+It's clear to see that locally normally convergent series are also (locally) uniformly absolutely convergent, and thus we have the following corollary:
+
+\begin{corollary}
+If $f_n \in \mathcal{A}\left(G\right) = \mathcal{O}\left(G\right)$ are holomorphic functions (resp. $f_n \in \mathcal{M}\left(G\right)$ mermorphic functions) on $G$, such that $f = \sum_n f_n$ converges normally, then $f \in \mathcal{A}\left(G\right)$ (resp. $f \in \mathcal{M}\left(G\right)$).
+\end{corollary}
+
+\begin{example}
+Consider the following examples of normally converging series:
+
+\begin{enumerate}
+\item $\left(\frac{\pi}{\sin\pi z}\right)^2 = \sum_{n\in\mathbb{Z}} \frac{1}{\left(z-n\right)^2}$
+\item $\frac{\pi}{\sin\pi z}= -\frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(-1\right)^n \left(\frac{1}{z-n} + \frac{1}{n}\right)$
+\item $\pi \cot \pi z =  \frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}} \left(\frac{1}{z-n} + \frac{1}{n}\right)$
+\end{enumerate}
+\end{example}
+
+Let us prove the first example.
+
+\subsection{A subsection}
+
+More text.
+
+\end{document}
