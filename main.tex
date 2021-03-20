@@ -1,0 +1,431 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+\usepackage{amsmath} % More symbols
+\usepackage{amsfonts} % More fonts
+\usepackage{amsthm} % Theorems
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% Theorem stuff
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newtheorem{claim}[theorem]{Claim}
+
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\res}{\text{res}}
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{Theory Of Functions Of A Complex Variable 2 - 2021B}
+\author{Alon Ben-Tsur}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Normal Convergence of Series and Products}
+
+\subsection{Series and Elementary Examples}
+
+We'll start with a definition:
+
+\begin{definition}
+Let $G \subseteq \mathbb{C}$ be an open set. A series of functions $f_n$ is said to be normally convergent (or locally normally convergnet, or compactly normally convergent) if for every compact set $K \subseteq G$, for some $n_0 = n\left(K\right)$, we have that:
+\[ \sum _{n \geq n_0} \left\lVert f_n \right\rVert_{C\left(K\right)} = \sum _{n \geq n_0} \sup _K \left|f_n\right| < \infty \]
+\end{definition}
+
+Note, that we can make sense of this definition in the case of meromorphic functions (which might be "partially defined" on $G$, up to a discrete set). Noticing that if every point $z \in G$ has a neighborhood on which almost all $f_n$ functions are defined, and thus bounded on comapct sets, this definition holds.
+
+It's clear to see that locally normally convergent series are also (locally) uniformly absolutely convergent, and thus we have the following corollary:
+
+\begin{corollary}
+If $f_n \in \mathcal{A}\left(G\right) = \mathcal{O}\left(G\right)$ are holomorphic functions (resp. $f_n \in \mathcal{M}\left(G\right)$ meromorphic functions) on $G$, such that $f = \sum_n f_n$ converges normally, then $f \in \mathcal{A}\left(G\right)$ (resp. $f \in \mathcal{M}\left(G\right)$).
+\end{corollary}
+
+\begin{example}
+Consider the following examples of normally converging series, where $G = \mathbb{C}$:
+
+\begin{enumerate}
+\item $\left(\frac{\pi}{\sin\pi z}\right)^2 = \sum_{n\in\mathbb{Z}} \frac{1}{\left(z-n\right)^2}$
+\item $\frac{\pi}{\sin\pi z}= -\frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(-1\right)^n \left(\frac{1}{z-n} + \frac{1}{n}\right)$
+\item $\pi \cot \pi z =  \frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}} \left(\frac{1}{z-n} + \frac{1}{n}\right)$
+\end{enumerate}
+\end{example}
+
+We will show two approaches one can take to prove these examples. The first approuch is as follows:
+
+\begin{enumerate}
+\item For the first example, show that the difference function is a bounded, entire function tending to $0$. Conclude that in that case, the difference must be identically $0$.
+\item Taking deriviatives, deduce the third example from the first.
+\end{enumerate}
+
+\begin{proof}
+Consider the difference function $g\left(x\right) = \left(\frac{\pi}{\sin\pi z}\right)^2 - \sum_{n\in\mathbb{Z}} \frac{1}{\left(z-n\right)^2}$.
+
+We claim the $g$ is an entire function. Indeed, the only "suspected poles" of $g$ are at the integers $n \in \mathbb{Z}$. But the order of the pole of $\left(\frac{\pi}{\sin\pi z}\right)^2$ at $n$ is $2$, so subtracting $\frac{1}{\left(z-n\right)^2}$, we see that $g\left(n\right)$ is well defined (Intuitively, we "subtracted" all the poles).
+
+Secondly, we claim that $g$ is $1$-periodic: $g\left(z+1\right) = g\left(z\right)$. Indeed, $\sin \pi \left(z + 1\right) = \sin \pi z$, and "shifting" $n$ forward, we see that $\sum_{n\in\mathbb{Z}} \frac{1}{\left(z+1-n\right)^2} = \sum_{n\in\mathbb{Z}}\frac{1}{\left(z-n\right)^2}$.
+
+Thirdly, we have that $g\left(z\right) \to 0$ when $\abs{\Im z} \to \infty$.
+
+Indeed, one can see that $\abs{\sin \pi z} \to \infty$ when $\abs{\Im z} \to \infty$ in multiple ways, for example considering $\sin\left(a + bi\right) = \sin a \cosh b + i \cos a \sinh b$: when $\abs{b} \to \infty$, both $\abs{\cosh b}$ and $\abs{\sinh b}$ go to infinity, and we can't have $\sin a$ and $\cos a$ go to $0$ at the same time, so at least of the componets (the real or the imaginary) explode to infinity.
+
+Now, the series $\sum _{n\in\mathbb{Z}}\frac{1}{\left(z-n\right)^2}$ is actually globally uniformly convergent away from its poles (for example in $\left\{\abs{\Im z} > 1\right\}$), so we can exchange limits and see that that
+\[ \lim _{\abs{\Im z} \to \infty}\sum _{n\in \mathbb{Z}} \frac{1}{\left(z-n\right)^2} = \sum_{n\in \mathbb{Z}} \lim_{\abs{\Im z} \to \infty} \frac{1}{\left(z-n\right)^2} = \sum_{n\in\mathbb{Z}} 0 = 0\]
+
+Let us show that $g$ is bounded. Assume $\abs{g\left(z_n\right)} \to \infty$.
+
+Considering $z_n - \left[\Re z_n\right]$, and the fact that $g\left(z+1\right) = g\left(z\right)$, we can assume that all $z_n$ are in the strip $\left\{0\leq \Re z \leq 1\right\}$.
+
+So we must have that $\abs{\Im z_n} \to \infty$: Otherwise, $z_n$ is contained in a compact rectangle, and the limit of $\abs{g\left(z_n\right)}$ would be finite. But in that case, $\lim g\left(z_n\right) = 0$, so $\abs{g\left(z_n\right)}$ must be bounded, which is a contradiction.
+
+We conclude that $g$ is a bouned, entire function. From Liouville's theorem, $g$ must be constant, and since it tends to $0$, we must have $g \equiv 0$.
+
+We conclude that $\left(\frac{\pi}{\sin \pi z}\right)^2 = \sum_{n\in \mathbb{Z}} \frac{1}{\left(z-n\right)^2}$.
+
+Now, differentiating term-by-term, we have that:
+\[ -\frac{d}{dt}\left(\pi\cot \pi z\right) = \left(\frac{\pi}{\sin\pi z}\right)^2 = \sum_{n\in \mathbb{Z}} \frac{1}{\left(z-n\right)^2} = -\frac{d}{dt}\left(\frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(\frac{1}{z-n}+\frac{1}{n}\right)\right)\]
+
+So $\pi \cot \pi z = \frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(\frac{1}{z-n}+\frac{1}{n}\right) + C$, where $C$ is some constant.
+
+Now, both $\pi \cot \pi z$ and $\frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(\frac{1}{z-n}+\frac{1}{n}\right)$ are odd functions, so their difference, $C$, must be an odd function. But the only constant odd function is $0$, and we conclude that $\pi \cot \pi z = \frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(\frac{1}{z-n}+\frac{1}{n}\right)$.
+
+For the last identity, we have that:
+\[
+\begin{split}
+\frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}} \left(-1\right)^n \left(\frac{1}{z-n} + \frac{1}{n}\right) & = 2\left(\frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(\frac{1}{z-2n}+\frac{1}{2n}\right)\right) \\
+& \qquad - \frac{1}{z} + \sum_{n\in\mathbb{Z}\setminus\left\{0\right\}}\left(\frac{1}{z-n}+\frac{1}{n}\right) \\
+& = 2\cdot\frac{\pi}{2} \cot \frac{\pi z}{2} - \pi \cot \pi z \\
+& = \frac{\pi}{\sin\pi z}
+\end{split}
+\]
+
+\end{proof}
+
+The second approach, due to Cauchy, is of the following fashion:
+
+\begin{enumerate}
+\item Show either the second or the third example using contour integration.
+\item Deduce the first example from the third taking deriviatives.
+\end{enumerate}
+
+\begin{proof}
+
+Set $f\left(z\right)$ to be either $\pi \cot \pi z$ or $\frac{\pi}{\sin \pi z}$.
+
+Fix some $z$.
+
+Denote the square $Q_N = \left\{\abs{\Re z}, \abs{\Im z} \leq N + \frac{1}{2} \right\}$. Consider its perimeter $\partial Q_N$, going counter clockwise, and set $I_n = \frac{1}{2\pi i}\int_{\partial Q_N} f\left(\xi\right)\left(\frac{1}{\xi - z} - \frac{1}{\xi}\right)d \xi$.
+
+Since $f$ is bounded on all the squares $Q_N$, and the integral of the $\frac{1}{\xi -z}, \frac{1}{z}$ parts is inverse quadratic, we see that:
+\[ \abs{I_N} \leq \frac{C}{N^2} \cdot\text{Length} \left(\partial Q_N \right) \cdot \max_{\partial Q_N} \abs{f} \to 0\]
+
+From the residue theorem, we have that $I_N = \sum_{\abs{n} \leq N} \res_n f - f\left(z\right)$. Taking $n \to \infty$, we obtain our results.
+\end{proof}
+
+\subsection{Products and Elementary Examples}
+
+\begin{definition}
+Suppose that $f_n = 1 + a_n$, that is, $a_n = f_n - 1$. We say that $\prod_n f_n$ normally converges in $G$ if $\sum _n a_n$ normally converges in $G$.    
+\end{definition}
+
+\begin{claim}
+The following properties of normally convergent products hold:
+
+\begin{enumerate}
+\item Rearrangement of order: given a permutation $\sigma$ of the natural numbers, we have that $\prod_n f_n = \prod_n f_{\sigma\left(n\right)}$.
+\item Products of analytic/meromorphic functions: $\left(f_n\right) \subseteq \mathcal{A}\left(G\right)$ (resp. $\mathcal{M}\left(G\right)$) implies that $\prod_n f_n \in \mathcal{A}\left(G\right)$ (resp. $\mathcal{M}\left(G\right)$).
+\item If we denote the zero set of a function by $Z$, we have that $Z\left(\prod_n f_n\right) = \bigcup_n Z\left(f_n\right)$.
+\item Normal convergence of logarithmic derivative: $\sum_n \frac{f_n'}{f_n}$ normally converges.
+\end{enumerate}
+\end{claim}
+
+The proofs of these properties are left as an exercise (I'll probably add them later).
+
+\begin{example}
+We have that:
+\[ \sin \pi z = \pi z \prod_{n\neq 0}\left(1 - \frac{z}{n}\right)e^{\frac{z}{n}} = \pi z \prod _{n\geq 1} \left(1 - \frac{z^2}{n^2}\right)\]
+\end{example}
+
+\begin{proof}
+Consider the logarithmic derivative:
+\[ \pi \cot \pi z = \frac{1}{z} + \sum _{n\in \mathbb{Z}\setminus\left\{0\right\}}\left(\frac{1}{z-n} + \frac{1}{n}\right) = \frac{1}{z} + \sum_{n\in \mathbb{Z}\setminus\left\{0\right\}} \left(\log \left(1- \frac{z}{n}\right) + \frac{z}{n}\right)'\]
+
+So we have that $\sin \pi z = C z \prod_{n\neq 0}\left(1 - \frac{z}{n}\right)e^{\frac{z}{n}}$. Dividing by $z$ and taking $z \to 0$, we see that $C = \pi$.
+\end{proof}
+
+Here are another few examples we will see during the course:
+
+\begin{example}
+\begin{enumerate}
+\item $\prod_{n=0}^\infty \left(1 + z^{2^m}\right) = \frac{1}{1-z}$, where $\abs{z} < 1$.
+\begin{item}
+$\prod_{n=0}^\infty \left(1 - z^{2^m}\right) = \sum_{n\geq 0} t\left(n\right) z^n$, where $\abs{z} < $.
+
+Here $t\left(n\right)$ is the Thue-Morse sequence: $t\left(n\right) = \left(-1\right)^{\omega\left(n\right)}$, where $\omega\left(n\right)$ is the number of $1$'s in the binary expansion of $n$.
+
+There is a simple recurrence relation: $t\left(n\right) = 0$, $t\left(2n\right) = t\left(n\right)$, $t\left(2n+1\right) = -t\left(n\right)$.
+\end{item}
+
+\begin{item}
+$\prod_{m=1}^\infty \frac{1}{1- z^m} = \sum_{n \geq 0}p\left(n\right)z^n$, where $\abs{z} < 1$.
+
+Here, $p\left(n\right)$ is the partition function: $p\left(n\right)$ is the number of ways we can write $n$ as a sum of natural ($\geq 0$) numbers, disregarding order.
+
+There is a theorem of Hardy and Ramanujan: $p\left(n\right) \approx \frac{1}{4n\sqrt{3}} e^{\pi\sqrt{\frac{2n}{3}}}$.
+\end{item}
+
+\item $\prod_p \left(1-\frac{1}{p^s}\right)^{-1} = \sum_{n \geq 1} \frac{1}{n^s}$, where $\Re s > 1$.
+\end{enumerate}
+\end{example}
+
+\section{Euler Gamma Function}
+
+\subsection{Definition and Basic Properties}
+
+\begin{definition}
+The Euler Gamma Function is defined on $\left\{\Re z > 0\right\}$ by the following formula:
+\[ \Gamma \left(z\right) = \int_0^\infty t^{z-1}e^{-t}dt \]
+\end{definition}
+
+\begin{claim}
+The following functional equation holds:
+\[ \Gamma \left(z+1\right) = z \Gamma\left(z\right) \]
+\end{claim}
+
+\begin{proof}
+Integrating by parts, setting $u = t^z$, $v' = e^{-t}$, $u' = zt^{z-1}$, $v = -e^{-t}$, we have that:
+
+\[
+\begin{split}
+\Gamma\left(z+1\right) = & \int_0^\infty t^z e^{-t}dt \\
+= & \left[-zt^{z-1}e^{-t}\right]_0^\infty + z\int_0^\infty t^{z-1}e^{-t}dt \\
+= & 0 + z\Gamma\left(z\right)
+\end{split}
+\]
+\end{proof}
+
+Now, we would like to show that $\Gamma \in \mathcal{A}\left(\Re z > 1\right)$. We'll need some machinery concerning integrals of analytic functions.
+
+\begin{lemma}
+Let $F : G \times \left[0,1\right] \to \mathbb{C}$ be a continuous function, such that for all $t \in \left[0,1\right]$, the function $f\left(z\right) = F\left(z,t\right)$ is analytic on $G$. Then the definite integral $z \mapsto \int_0^1 F\left(z,t\right)dt$ is analytic on $G$.
+\end{lemma}
+
+\begin{proof}
+The trick is to approximate the integral using Riemann sums.
+
+Set $f_n \left(z\right) = \frac{1}{n} \cdot \sum_{k=0}^{n-1} F\left(z, \frac{k}{n}\right)$. We have that $f_n \to f$ locally uniformly.
+
+Indeed, fix some $\varepsilon > 0$, and some $z \in G$. Take a closed disk $\bar{D} \subseteq G$ around $z$ and some $\delta > 0$, such that if $\abs{t-t'} < \delta$ we have that $\sup_{w\in\bar{D}}\abs{F\left(w, t\right) - F\left(w, t'\right)} < \varepsilon$. Then for $n > \frac{1}{\delta}$ we have that:
+\[
+\begin{split}
+\sup_{w \in \bar{D}} \abs{f - f_n} & = \sup_{w\in\bar{D}}\abs{\int_0^1 F\left(w,t\right)dt - \frac{1}{n}\sum_{k=0}^{n-1} F\left(w, \frac{k}{n}\right)} \\
+& \leq \sup_{w\in\bar{D}}\sum_{k=0}^{n-1}\int_{\frac{k}{n}}^{\frac{k+1}{n}} \abs{F\left(w,t\right) - F\left(w, \frac{k}{n}\right)}dt \\
+& \leq \sum_{k=0}^{n-1}\frac{1}{n}\varepsilon \\
+& = \varepsilon
+\end{split}
+\]
+
+Since each $f_n$ is analytic, we conclude that $f$ is analytic.
+\end{proof}
+
+\begin{claim}
+$\Gamma \in \mathcal{A}\left(\Re z > 0 \right)$.
+\end{claim}
+
+\begin{proof}
+Set $f_n\left(z\right) = \int_{\frac{1}{n}}^n t^{z-1}e^{-t}dt$. From the last lemma, each $f_n$ is analytic. We will show that $f_n$ converges to $\Gamma$ locally uniformly.
+
+Fix some $z_0$ with $\Re z > 0$.
+
+We'll start with approximating $\int_0^{\frac{1}{n}} t^{z-1} e^{-t} dt$.
+
+We have that $1 \geq e^{-t}$ for all $t\in \left[0,\frac{1}{n}\right]$. Take some $\Re z_0 > \delta > 0$. We have that $\abs{t^{z-1}} < t^{\delta - 1}$ for all $t\in \left[0,\frac{1}{n}\right]$. We conclude that:
+\[ \abs{\int_0^{\frac{1}{n}}t^{z-1} e^{-t} dt} \leq \int_0^{\frac{1}{n}} t^{\delta - 1} dt = \delta^{-1} n^{-\delta} \to 0\]
+that is, in $\Re z_0 > \delta$, we have that $\int_0^{\frac{1}{n}}t^{z-1}e^{-t} dt$ converges uniformly to $0$.
+
+For the other tail, take some $\Re z_0 < M$. For all $t > 1$, we have that $\abs{t^{z - 1}} \leq t^{M - 1}$. Now, consider $t^{M-1}e^{-\frac{t}{2}}$. This goes to $0$ as $t \to \infty$, so at some point, for large enough $t$, $t^{M-1} \leq e^{\frac{t}{2}}$. Equivalently, we have that $t^{M-1}e^{-t} \leq e^{-\frac{t}{2}}$. We conclude that for large enough $n$:
+\[ \abs{\int _n ^\infty t^{z-1}e^{-t} dt} \leq \int_n ^\infty e^{-\frac{t}{2}}dt \to 0 \]
+that is, in $\Re z_0 < M$, we have that $\int_n^\infty t^{z-1}e^{-t}dt$ converges uniformly to $0$.
+
+Finally, the function $\Gamma - f_n$ converges locally uniformly to $0$, so $f_n$ converges locally uniformly to $\Gamma$ and so $\Gamma$ is analytic.
+\end{proof}
+
+\begin{claim}
+$\Gamma$ can be extended to a meromorphic function on the entire plane. Furthermore, the only poles of $\Gamma$ are the non-positive integers, and they are simple poles with residues $\res_{-n} \Gamma = \frac{\left(-1\right)^n}{n!}$.
+\end{claim}
+
+We will sketch two proofs for this fact, one of which relies on the functional equation $\Gamma$ satisfies, and the other one relies on the definition of $\Gamma$ using integrals.
+
+\begin{proof}
+Consider some $z$ with $\Re z > -1$. The expression $\Gamma\left(z\right) = \frac{\Gamma\left(z+1\right)}{z}$ is well defined (except maybe at $z = 0$). It clearly defines a holomorphic function (in its domain of definition, that is, without $0$), which extends the $\Gamma$ function.
+
+Continuing with this fashion, we can set for $z$ with $\Re z > -2$: $\Gamma\left(z\right) = \frac{\Gamma\left(z+2\right)}{z\left(z+1\right)}$, which defines a holomorhpic function on its domain of definition.
+
+Each step, for $\Re z > n$, we have that $\Gamma\left(z\right) = \frac{\Gamma\left(z + n + 1\right)}{z\left(z+1\right)\dots\left(z + n\right)}$.
+
+Finally, we get an extension of $\Gamma$, holomorphic on the entire plane without the nonpositive integers.
+
+Computing residues, we have that $\res_0 \Gamma = \Gamma\left(1\right) = 1$, $\res_{-1}\Gamma = \frac{\Gamma\left(1\right)}{-1} = -1$, and so on, $\res_{-n}\Gamma= \frac{\Gamma\left(1\right)}{\left(-n\right)\left(-n+1\right)\dots\left(-n+n-1\right)} = \frac{\left(-1\right)^n}{n!}$.
+
+We conclude that $\Gamma$ can be extended to a meromorphic satisfying the claim.
+\end{proof}
+
+Now, for the proof using the integral definition:
+
+\begin{proof}
+Consider $\Gamma\left(z\right) = \int_0 ^1 t^{z-1}e^{-t}dt + \int_1^\infty t^{z-1}e^{-t}dt$.
+
+We saw in our proof that $\Gamma$ is analytic that the left integral is actually locally uniformly convergnet on the entire plane, that is, it defines an entire function $g\left(z\right)$. All that is left to show is that the right integral can be extended to a meromorphic function on the entire plane with the desired residues.
+
+Fixing some $\Re z \geq \delta >0$, we uniform convergence, so we can exchange the series defining $e^{-t}$ and the integral:
+\[ \int_0 ^1 t^{z-1} e^{-t} dt = \int _0 ^1 t^{z-1} \sum_{n=0}^\infty \frac{\left(-1\right)^n}{n!} t^n dt = \sum_{n=0}^\infty \frac{\left(-1\right)^n}{n!} \int_0^1 t^{z+n-1}dt = \sum_{n=0}^\infty \frac{\left(-1\right)^n}{n!}\frac{1}{n+z} \]
+
+But the left hand series actually locally uniformly converges on the entire plane to a meromorphic with the desired simple poles and residues, so the $\Gamma$ function can be extended to such a function.
+\end{proof}
+
+The technique displayed at the last proof, of taking a function defined by an integral or a series with a limited domain of convergence, and rewriting them using integration by parts or other sorts of expansion to extend their domain of definitions, will also be used later in the course.
+
+Consider $\frac{1}{\Gamma}$. It is a meromorphic function defined on the entire plane. We will show that it is actually entire, using the following formula.
+
+\begin{claim}
+We have that:
+\[ \frac{1}{\Gamma\left(z\right)} = ze^{\gamma z} \prod_{z \geq 1} \left(1+\frac{z}{n}\right)e^{-\frac{z}{n}}\]
+
+where $\gamma = \lim_{N\to \infty} \left(\sum_{n=1}^N\frac{1}{n} - \log N\right)$ is the Euler-Mascheroni constant.  
+\end{claim}
+
+\begin{proof}
+Consider the functions
+\[
+f_n\left(t\right) =
+\begin{cases}
+\left(1-\frac{t}{n}\right)^n, & 0\leq t \leq n \\
+0, & t > n
+\end{cases}
+\]
+
+From basic calculus, we know that $0 \leq f_n \leq e^{-t}$, and that $f_n \uparrow e^{-t}$.
+
+Fix some $z$ with $\Re z > 0$. We have that:
+\[ \int _0^\infty f_n\left(t\right) t^{z-1} dt = \int_0^n \left(1- \frac{t}{n}\right)^n t^{z-1}dt \]
+
+Integrating by parts, setting $u = \left(1 - \frac{t}{n}\right)^n$, $v' = t^{z-1}$, $u' = -\frac{n}{n}\left(1-\frac{t}{n}\right)^{n-1}$, $v = \frac{1}{z}t^{z+1-1}$, we have that:
+\[
+\begin{split}    
+\int_0^n \left(1-\frac{t}{n}\right)^n t^{z-1} dt & = \left[\frac{1}{z}\left(1-\frac{t}{n}\right)^nt^{z+1 -1}\right]_0^n + \frac{n}{n}\cdot\frac{1}{z}\int_0^n \left(1-\frac{t}{n}\right)^{n-1}t^{z+1-1}dt \\
+& = 0 + \frac{n}{n}\cdot\frac{1}{z}\int_0^n \left(1-\frac{t}{n}\right)^{n-1}t^{z+1-1}dt \\
+& = \frac{n}{n}\cdot\frac{1}{z}\int_0^n \left(1-\frac{t}{n}\right)^{n-1}t^{z+1-1}dt
+\end{split}
+\]
+
+Integrating by parts again, this time with $u = \left(1 + \frac{t}{n}\right)^{n-1}$, $v' = t^{z+1-1}$, we have that:
+\[ \int_0^n \left(1-\frac{t}{n}\right)^n t^{z-1} dt = \frac{n\left(n-1\right)}{n^2}\cdot\frac{1}{z\left(z+1\right)}\int_0^n \left(1-\frac{t}{n}\right)^{n-2}t^{z+2-1}dt \]
+
+Continuing like this $n$-times, we finally have that:
+\[
+\begin{split}
+\int_0^n \left(1-\frac{t}{n}\right)^n t^{z-1} dt &= \frac{n!}{n^n} \cdot \frac{1}{z\left(z+1\right)\cdots\left(z+n-1\right)}\int_0^n t^{z+n-1}dt \\
+& = \frac{n!}{n^n} \cdot \frac{n^{z+n}}{z\left(z+1\right)\cdots\left(z+n\right)}
+\end{split}
+\]
+
+Interchanging the order of the improper integral and limit (TODO: why can we do that?), we have that:
+\[ \Gamma\left(z\right) = \lim_{n\to\infty} \frac{n!}{n^n} \frac{n^{z+n}}{z\left(z+1\right)\cdots\left(z+n\right)} \] 
+or equivalently:
+\[ \frac{1}{\Gamma\left(z\right)} = \lim_{n\to \infty} \frac{n^n}{n!}\frac{z\left(z+1\right)\cdots\left(z+n\right)}{n^{z+n}} \]
+
+Rearranging, we have that:
+\[ \frac{n^n}{n!}\frac{z\left(z+1\right)\cdots\left(z+n\right)}{n^{z+n}} = z n^{-z} \left(1 + \frac{z}{1}\right)\left(1 + \frac{z}{2}\right)\dots\left(1 + \frac{z}{n}\right)\]
+and clearly:
+\[n^{-z} = e^{-z\log n} = e^{-z\left(\log n - \sum_{k=1}^n\frac{1}{k}\right)} \cdot e^{-\frac{z}{1}} \cdot e^{-\frac{z}{2}}\cdot \dots \cdot e^{-\frac{1}{n}}\]
+and finally, for all $z$ with $\Re z > 0$, we have that:
+\[ \frac{1}{\Gamma\left(z\right)} = ze^{\gamma z}\prod_{n\geq1}\left(1+\frac{z}{n}\right)e^{-\frac{z}{n}}\]
+
+From the identity theorem, the equality holds in the entire complex plane.
+\end{proof}
+
+Now, from the product, it is clear that $\frac{1}{\Gamma}$ is entire. This means that $\Gamma$ has no zeroes in the entire plane.
+
+Now, for the famous Euler Reflection Formula:
+
+\begin{claim}
+For all $z \notin \mathbb{Z}$ we have that $\Gamma\left(z\right)\Gamma\left(1-z\right) = \frac{\pi}{\sin\pi z}$.
+\end{claim}
+
+\begin{proof}
+We have that:
+\[
+\frac{1}{\Gamma\left(z\right)\Gamma\left(-z\right)} = -z^2 \prod_{n\geq 1}\left(1 - \frac{z^2}{n^2}\right) = -\frac{z}{\pi}\sin\pi z
+\]
+so:
+\[ \Gamma\left(z\right)\Gamma\left(1-z\right) = -z\Gamma\left(z\right)\Gamma\left(-z\right) = \frac{\pi}{\sin\pi z} \]
+\end{proof}
+
+Finally, we get our first non-trivial value of the Gamma function:
+
+\begin{corollary}
+$\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}$.
+\end{corollary}
+
+Another corollary of the expansion of $\frac{1}{\Gamma}$ as an infinte product, is an expression of the logarithmic derivative of $\Gamma$ as a series:
+
+\begin{corollary}
+The logarithmic derivative of the Gamma function satisfies: $\frac{\Gamma'}{\Gamma} = -\gamma - \frac{1}{z} - \sum_{n\geq 1}\left(\frac{1}{z+n} - \frac{1}{n}\right)$. Thus, the second logarithmic derivative of the Gamma Function satisfies $\left(\frac{\Gamma'}{\Gamma}\right)' = \sum _{n \geq 0}\frac{1}{\left(z+n\right)^2}$.
+\end{corollary}
+
+We conclude the subsection by listing a few of the properties of the Gamma function we showed:
+
+\begin{enumerate}
+\item $\Gamma\left(z+1\right) = z\Gamma\left(z\right)$.
+\item $\Gamma \in \mathcal{A}\left(\Re z > 0\right)$.
+\item $\Gamma$ has a meromorphic continuation to the entire plane, with simple poles in the points $0,-1,-2,\dots$ such that $\res_{-n} \Gamma = \frac{\left(-1\right)^n}{n!}$.
+\item $\frac{1}{\Gamma\left(z\right)} = ze^{\gamma z}\prod_{n \geq 1}\left(1+\frac{z}{n}\right)e^{-\frac{z}{n}}$.
+\item $\Gamma\left(z\right)\Gamma\left(1-z\right) = \frac{\pi}{\sin \pi z}$.
+\end{enumerate}
+
+\end{document}
