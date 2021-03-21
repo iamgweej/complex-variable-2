@@ -22,6 +22,7 @@
 \usepackage{amsfonts} % More fonts
 \usepackage{amsthm} % Theorems
 
+
 %%% HEADERS & FOOTERS
 \usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
 \pagestyle{fancy} % options: empty , plain , fancy
@@ -44,11 +45,14 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 
-\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
 
 \newtheorem{example}[theorem]{Example}
 
@@ -103,7 +107,7 @@ We will show two approaches one can take to prove these examples. The first appr
 \item Taking deriviatives, deduce the third example from the first.
 \end{enumerate}
 
-\begin{proof}
+\begin{proof}[Proof using Liouville's Theorem]
 Consider the difference function $g\left(x\right) = \left(\frac{\pi}{\sin\pi z}\right)^2 - \sum_{n\in\mathbb{Z}} \frac{1}{\left(z-n\right)^2}$.
 
 We claim the $g$ is an entire function. Indeed, the only "suspected poles" of $g$ are at the integers $n \in \mathbb{Z}$. But the order of the pole of $\left(\frac{\pi}{\sin\pi z}\right)^2$ at $n$ is $2$, so subtracting $\frac{1}{\left(z-n\right)^2}$, we see that $g\left(n\right)$ is well defined (Intuitively, we "subtracted" all the poles).
@@ -153,7 +157,7 @@ The second approach, due to Cauchy, is of the following fashion:
 \item Deduce the first example from the third taking deriviatives.
 \end{enumerate}
 
-\begin{proof}
+\begin{proof}[Proof using Cauchy's approach]
 
 Set $f\left(z\right)$ to be either $\pi \cot \pi z$ or $\frac{\pi}{\sin \pi z}$.
 
@@ -374,7 +378,7 @@ Continuing like this $n$-times, we finally have that:
 \end{split}
 \]
 
-Interchanging the order of the improper integral and limit (TODO: why can we do that?), we have that:
+Interchanging the order of the improper integral and limit (for example, using the Dominated Convergence Theorem, see notes), we have that:
 \[ \Gamma\left(z\right) = \lim_{n\to\infty} \frac{n!}{n^n} \frac{n^{z+n}}{z\left(z+1\right)\cdots\left(z+n\right)} \] 
 or equivalently:
 \[ \frac{1}{\Gamma\left(z\right)} = \lim_{n\to \infty} \frac{n^n}{n!}\frac{z\left(z+1\right)\cdots\left(z+n\right)}{n^{z+n}} \]
@@ -388,6 +392,18 @@ and finally, for all $z$ with $\Re z > 0$, we have that:
 
 From the identity theorem, the equality holds in the entire complex plane.
 \end{proof}
+
+\begin{remark}
+In this proof, we used Lebesgue's Dominated Convergence Theorem to change the order of the limit and the integral. We will not prove this theorem here, as it requires some measure-theoretic background.
+
+For our usage, it statement is as follows:
+
+Let $\left\{f_n: I \subseteq \mathbb{R} \to \mathbb{C}\right\}$ be a sequence of functions, absolutely integrable and converging to to a limit function $f$ pointwise. If there exists some integrable function dominating the entire sequence, that is, $\abs{f_n\left(x\right)} \leq g\left(x\right)$ for all $x$, then we have that 
+\[ \int_I \abs{f_n - f} \to 0\]
+and as a result, $\int_I f_n \to \int_I f$.
+
+In this theorem, the interval $I$ is allowed to be infinite, and the integral is understanded as an improper Riemann integral.
+\end{remark}
 
 Now, from the product, it is clear that $\frac{1}{\Gamma}$ is entire. This means that $\Gamma$ has no zeroes in the entire plane.
 
@@ -418,6 +434,72 @@ Another corollary of the expansion of $\frac{1}{\Gamma}$ as an infinte product, 
 The logarithmic derivative of the Gamma function satisfies: $\frac{\Gamma'}{\Gamma} = -\gamma - \frac{1}{z} - \sum_{n\geq 1}\left(\frac{1}{z+n} - \frac{1}{n}\right)$. Thus, the second logarithmic derivative of the Gamma Function satisfies $\left(\frac{\Gamma'}{\Gamma}\right)' = \sum _{n \geq 0}\frac{1}{\left(z+n\right)^2}$.
 \end{corollary}
 
+\begin{theorem}[Gauss Multiplication Formula]
+\[ \left(2\pi\right)^{\frac{n-1}{2}}\Gamma\left(nz\right) = n^{nz - \frac{1}{2}}\Gamma\left(z\right)\Gamma\left(z+\frac{1}{n}\right)\dots\Gamma\left(z+\frac{n-1}{n}\right)\]  
+\end{theorem}
+
+\begin{proof}
+Taking the second logarithmic derivative, we have that:
+\[
+\begin{split}    
+\frac{d^2\log\Gamma\left(nz\right)}{dz^2} & = n^2 \sum _{k \geq 0}\frac{1}{\left(nz+k\right)^2}\\
+& = \sum _{k \geq 0}\frac{1}{\left(z+\frac{k}{n}\right)^2} \\
+& = \sum_{j=0}^{n-1} \sum_{k=0}^\infty \frac{1}{\left(z + k + \frac{j}{n}\right)^2} \\
+& = \sum_{j=0}^{n-1} \frac{d^2 \log \Gamma\left(z + \frac{j}{n}\right)}{dz^2} \\
+& = \frac{d^2}{dz^2} \log \prod_{j=0}^{n-1}\Gamma\left(z + \frac{j}{n}\right)
+\end{split}
+\]
+
+This shows that $\log\Gamma\left(nz\right) = \log \prod_{j=0}^{n-1}\Gamma\left(z + \frac{j}{n}\right) + \alpha z + \beta$, and exponentiating, we have that:
+\[ \Gamma\left(nz\right) = e^{\alpha z + \beta}\Gamma\left(z\right)\Gamma\left(z+\frac{1}{n}\right)\dots\Gamma\left(z+\frac{n-1}{n}\right) \]
+
+Now, replace $z$ with $z+1$ in the last formula. For the left hand size we have that:
+\[
+\begin{split}
+\Gamma\left(nz + n\right) & = \left(nz + n - 1\right) \Gamma\left(nz + n -1\right) \\
+& = \left(nz + n - 1\right)\left(nz + n - 2\right)\Gamma\left(nz + n - 2\right) \\
+& = \left(nz + n - 1\right)\left(nz + n - 2\right)\dots\left(nz\right)\Gamma\left(nz\right) \\
+& = n^n\left(z + \frac{n-1}{n}\right)\left(z + \frac{n-2}{n}\right)\dots z \Gamma\left(nz\right)
+\end{split}
+\]
+and for the right hand size:
+\[
+\begin{split}
+& e^{\alpha \left(z + 1\right) + \beta}\Gamma\left(z+1\right)\Gamma\left(z+1+\frac{1}{n}\right)\dots\Gamma\left(z+1+\frac{n-1}{n}\right) = \\
+& e^\alpha z\left(z + \frac{1}{n}\right)\dots\left(z + \frac{n-1}{n}\right)e^{\alpha z + \beta} \Gamma\left(z\right)\Gamma\left(z+\frac{1}{n}\right)\dots\Gamma\left(z+\frac{n-1}{n}\right) = \\
+\end{split}
+\]
+
+Comparing these expressions, and dividing the original formula from both of them, we see that $n^n = e^\alpha$.
+
+So we arrived at the following conclusion: for some constant $C$, we have that:
+\[ \Gamma\left(nz\right) = Cn^{nz} \Gamma\left(z\right)\dots\Gamma\left(z + \frac{n-1}{n}\right) \]
+
+Consider the residue at $z = 0$:
+\[ \frac{1}{n} = \res_{z=0} \Gamma\left(nz\right) = \res_{z=0} Cn^{nz}\Gamma\left(z\right)\dots\Gamma\left(z+\frac{n-1}{n}\right) = C\cdot\Gamma\left(\frac{1}{n}\right)\dots\Gamma\left(\frac{n-1}{n}\right)\]
+
+The only thing left to do is to compute the product $\Gamma\left(\frac{1}{n}\right)\dots\Gamma\left(\frac{n-1}{n}\right)$. For that we'll use a trick. We can write:
+\[ \left(\Gamma\left(\frac{1}{n}\right)\dots\Gamma\left(\frac{n-1}{n}\right)\right)^{-2} = \prod_{j=1}^{n-1} \left(\Gamma\left(\frac{j}{n}\right)\Gamma\left(\frac{n-j}{n}\right)\right)^{-1} \]
+and using the reflection formula, we arrive at the following expression:
+\[ \prod_{j=1}^{n-1}\frac{\sin\frac{\pi j}{n}}{\pi} = \pi^{n-1} \prod_{j=1}^{n-1}\sin\frac{\pi j}{n}\]
+
+Let us write
+\[ \sin \frac{\pi j}{n} = \frac{e^{\frac{\pi i j}{n}} - e^{-\frac{\pi i j }{n}}}{2i} = \frac{1}{2i}e^{\frac{\pi i j}{n}}\left(1 - e^{-\frac{2\pi i j}{n}}\right)\]
+
+For the first part, we have that:
+\[ \prod_{j=1}^{n-1} e^{\frac{\pi i j}{n}} = e^{\frac{\pi i}{n}\sum_{j=1}^{n-1}j} = e^{\frac{\pi i}{n} \cdot \frac{n\left(n-1\right)}{2}} = i^{n-1} \]
+
+For $\prod_{j=1}^{n-1}\left(1 - e^{-\frac{2\pi i j}{n}}\right)$, consider the product $\prod_{j=1}^{n-1}\left(z - e^{-\frac{2\pi i j}{n}}\right)$. Let us evaluate this function at $z = 1$. Ths product is the multiplication of all the $n$-th roots of unity, excluding $1$. So we have that:
+\[ \prod_{j=1}^{n-1}\left(z - e^{-\frac{2\pi i j}{n}}\right) = \frac{z^n - 1}{z - 1} = 1 + z + z^2 + \dots + z^{n-1} \]
+setting $z = 1$, we must have that $\prod_{j=1}^{n-1}\left(1 - e^{-\frac{2\pi i j}{n}}\right) = n$.
+
+Finally, we have that:
+\[ \left(\Gamma\left(\frac{1}{n}\right)\dots\Gamma\left(\frac{n-1}{n}\right)\right)^{-2} = \pi^{n-1} \left(\frac{1}{2i}\right)^{n-1} i^{n-1} n = \frac{n}{\left(2 \pi\right)^{n-1}}\]
+and finally:
+\[ C = \left(2\pi\right)^{-\frac{n-1}{2}}n^{-\frac{1}{2}}\]
+which proves the theorem.
+\end{proof}
+
 We conclude the subsection by listing a few of the properties of the Gamma function we showed:
 
 \begin{enumerate}
@@ -426,6 +508,93 @@ We conclude the subsection by listing a few of the properties of the Gamma funct
 \item $\Gamma$ has a meromorphic continuation to the entire plane, with simple poles in the points $0,-1,-2,\dots$ such that $\res_{-n} \Gamma = \frac{\left(-1\right)^n}{n!}$.
 \item $\frac{1}{\Gamma\left(z\right)} = ze^{\gamma z}\prod_{n \geq 1}\left(1+\frac{z}{n}\right)e^{-\frac{z}{n}}$.
 \item $\Gamma\left(z\right)\Gamma\left(1-z\right) = \frac{\pi}{\sin \pi z}$.
+\item $\left(2\pi\right)^{\frac{n-1}{2}}\Gamma\left(nz\right) = n^{nz - \frac{1}{2}}\Gamma\left(z\right)\Gamma\left(z+\frac{1}{n}\right)\dots\Gamma\left(z+\frac{n-1}{n}\right)$
 \end{enumerate}
+
+\subsection{Characterization Theorems and Stirling's Formula}
+
+We would like to understand how the functional equation $F\left(z+1\right) = zF\left(z\right)$ defines the $\Gamma$ function.
+
+One can not hope that this functional equations uniquely defines the $\Gamma$ function, even not up to a multiplicative constant. Since if $G$ is an entire, $1$-periodic function, that is, $G\left(z+1\right) = G\left(z\right)$, we clearly have that $G\left(z\right)\Gamma\left(z\right)$ is a solution to the functional equation.
+
+Adding additional constraints do, in fact, define $\Gamma$ up to a multiplicative constant:
+
+\begin{theorem}[Bohr-Mollerup]
+Let $F\left(x\right)$ be a real function defined for $x > 0$ such that $x \mapsto \log F\left(x\right)$ is convex, and $F\left(x + 1\right) = xF\left(x\right)$. Then for $a = F\left(1\right)$, we have that $F = a\Gamma$.
+\end{theorem}
+
+We will neither prove nor use this theorem in the course, but it might be in the homework.
+
+We will, however, show another theorem of this sort:
+
+\begin{theorem}[Wielandt]
+Suppose that $F$ is an analytic function in $\Re z > 0$, such that $F\left(z+1\right) = zF\left(z\right)$, and $F$ is bounded in the strip $S = \left\{1 \leq \Re z \leq 2\right\}$. Then $F = a\Gamma$, where $a = F\left(1\right)$.
+\end{theorem}
+
+\begin{proof}
+Consider the function $f = F - a\Gamma$. It satisfies the functional equation $f\left(z+1\right) = zf\left(z\right)$ as well. When we extended $\Gamma$ to the entire complex plane, we only relied on this functional equation, so we can extend $f$ to a meromorphic function on the entire complex plane.
+
+Now, unlike $\Gamma$, we have that $f\left(1\right) = 0$. Thus, unlike the case when we extended $\Gamma$, $f$ doesn't have a pole at $0$, just a zero. Continuing like this, thorugh the functional equation, we see that $f$ doesn't have poles at the negative numbers. So in fact, $f$ is an entire function.
+
+Let us investigate $f$ on the strip $S_0 = \left\{0 \leq \Re z \leq 1\right\}$. Since $f$ doesn't have a pole at $0$, it is bounded in $\left\{\abs{z} \leq 1\right\} \cap S_0$. When $\abs{z} > 1$, we have that:
+\[ \abs{f\left(z\right)} = \abs{\frac{f\left(z+1\right)}{z}} \leq \abs{f\left(z+1\right)} \leq \sup_S\abs{f\left(z\right)} \]
+so we have that $f$ is bounded in $S_0$ as well.
+
+Consider $g\left(z\right) = f\left(z\right)f\left(1-z\right)$. We have that:
+\[
+\begin{split}
+g\left(z+1\right) & = f\left(z+1\right)f\left(z\right) \\
+& = z f\left(z\right)f\left(-z\right) \\
+& =-f\left(z\right)\left(-z\right)f\left(-z\right) \\
+& = f\left(z\right)f\left(1-z\right) \\
+& = -g\left(z\right)
+\end{split}
+\]
+and in particular, $\abs{g\left(z\right)} = \abs{g\left(z+1\right)}$.
+
+Since $f$ is bounded in $S_0$, so is $g$, and since $g$ is $1$-periodic, we have that $g$ is bounded in the entire plane. From Liouville's theorem, $g$ is constant, and since $g\left(1\right) =0$, we conclude that $g = 0$.
+
+Finally, we have that $f = 0$, so $F = a\Gamma$.
+\end{proof}
+
+We will now proceed to proving Stirling's formula, using a method due to Stieltjes.
+
+Consider the Saw Function $\psi\left(t\right) = t -\frac{1}{2} - \left[t\right]$. We clearly have that $\psi\left(t + 1\right) = \psi\left(t\right)$.
+
+Consider its Stieltjes transform $\mu\left(z\right) = - \int_0^\infty \frac{\psi\left(t\right)}{z + t}dt$, defined where $z = re^{i\theta}$, $\abs{\theta} < \pi$, that is, everywhere besides the negative ray.
+
+Notice that the integral defining $\mu$ is only conditionally convergent. This might be inconvinient at times, so let us define $\psi_1\left(t\right) = -\int_0^t \psi\left(s\right) ds$. Using integration by parts, we have that $\mu\left(z\right) = \int_0^\infty \frac{\psi_1\left(t\right)}{\left(t+z\right)^2}dt$, and notice that this integral is absolutely convergnet.
+
+\begin{theorem}[Stirling's Formula]
+\[ \Gamma\left(z\right) = \sqrt{2\pi}z^{z-\frac{1}{2}}e^{-z}e^{\mu\left(z\right)} \]    
+\end{theorem}
+
+Now, what about the "error-term" $\mu\left(z\right)$? We will give a simple, rough estimate:
+
+\begin{claim}
+For $r > 0$ and $-\pi < \theta < \pi$, we have that $\mu\left(re^{i\theta}\right) \leq \frac{1}{8}\cdot\frac{1}{r\cos^2\frac{\theta}{2}}$.
+\end{claim}
+
+\begin{proof}
+For $t \geq 0$ we have that:
+\[
+\begin{split}
+\abs{t + re^{i\theta}}^2 & = t^2 + 2tr\cos\theta+r^2 \\
+& = \left(t + r\right)^2 + 2tr \left(\cos\theta - 1\right) \\
+& = \left(t + r\right)^2 - 4tr\sin^2 \frac{\theta}{2}
+\end{split}
+\]
+now, since $\left(t+r\right)^2 \geq 4tr$, we have that:
+\[ \abs{t + re^{i\theta}}^2 \geq \left(t+r\right)^2\left(1-\sin^2\frac{\theta}{2}\right) = \left(t+r\right)^2\cos^2\frac{\theta}{2} \]
+
+And finally:
+\[ \abs{\mu\left(re^{i\theta}\right)} \leq \int_0^\infty \abs{\frac{\psi_1\left(t\right)}{\left(t+re^{i\theta}\right)^2}}dt \leq \frac{1}{8} \cdot \frac{1}{\cos^2\frac{\theta}{2}}\int_0^\infty\frac{1}{\left(t+r\right)^2}dt = \frac{1}{8}\cdot\frac{1}{r\cos^2\frac{\theta}{2}}\]
+\end{proof}
+
+We will give two approaches to proving this theorem.
+
+The first one will be showing that the right hand size satisfies Wielandt's theorem, and as such, must be equal to the Gamma Function. But this is in some sense "cheating": we are only verifying the formula, without getting an idea on how to derive it.
+
+Thus, in the second proof we will actually derive this formula. 
 
 \end{document}
